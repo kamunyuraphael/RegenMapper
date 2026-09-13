@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a120e" />
+      <stop offset="100%" stop-color="#050806" />
+    </linearGradient>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#102a1e" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#102a1e" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- UI / Brand Gradients -->
+    <linearGradient id="primaryGreen" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <linearGradient id="accentMint" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .title-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-weight: 800; fill: #ffffff; font-size: 54px; letter-spacing: -1px; }
+    .subtitle-text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-weight: 400; fill: #a7f3d0; font-size: 18px; letter-spacing: 4px; opacity: 0.8; }
+    .tech-label { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 11px; fill: #059669; opacity: 0.6; letter-spacing: 1px; }
+    .topo-line { fill: none; stroke: #10b981; stroke-opacity: 0.12; stroke-width: 1.5; }
+    .pulse-node { animation: pulse 3s infinite ease-in-out; }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="1200" height="600" fill="url(#bgGrad)" />
+
+  <!-- Technical Alignment Grid -->
+  <path d="M 0,50 L 1200,50 M 0,100 L 1200,100 M 0,200 L 1200,200 M 0,300 L 1200,300 M 0,400 L 1200,400 M 0,500 L 1200,500" stroke="#102a1e" stroke-width="1" stroke-opacity="0.2" />
+  <path d="M 100,0 L 100,600 M 200,0 L 200,600 M 400,0 L 400,600 M 600,0 L 600,600 M 800,0 L 800,600 M 1000,0 L 1000,600" stroke="#102a1e" stroke-width="1" stroke-opacity="0.2" />
+  
+  <!-- Topographic Contour Map Lines (Right Accent) -->
+  <g transform="translate(450, -50)">
+    <path d="M 300,250 C 450,200 500,100 650,180 C 750,230 700,400 600,450 C 500,500 350,420 300,250 Z" class="topo-line" />
+    <path d="M 340,260 C 460,220 500,140 620,210 C 700,250 670,380 580,410 C 490,440 380,390 340,260 Z" class="topo-line" stroke-opacity="0.18" />
+    <path d="M 380,270 C 470,240 500,180 590,240 C 650,270 630,350 560,370 C 490,390 410,350 380,270 Z" class="topo-line" stroke-opacity="0.25" stroke-width="2" />
+  </g>
+
+  <!-- Technical Infrastructure Dots / Mapping Nodes -->
+  <g stroke="#10b981" stroke-width="1">
+    <line x1="850" y1="230" x2="960" y2="160" stroke-opacity="0.3"/>
+    <line x1="960" y1="160" x2="1050" y2="280" stroke-opacity="0.3"/>
+    <line x1="850" y1="230" x2="910" y2="380" stroke-opacity="0.3"/>
+    <line x1="910" y1="380" x2="1050" y2="280" stroke-opacity="0.3"/>
+  </g>
+  <circle cx="850" cy="230" r="4" fill="#0a120e" stroke="#34d399" stroke-width="2" />
+  <circle cx="960" cy="160" r="4" fill="#0a120e" stroke="#34d399" stroke-width="2" />
+  <circle cx="1050" cy="280" r="5" fill="#34d399" filter="url(#glow)" />
+  <circle cx="910" cy="380" r="4" fill="#0a120e" stroke="#34d399" stroke-width="2" />
+
+  <!-- Central Brand Icon Configuration (Left Dynamic Group) -->
+  <g transform="translate(180, 240)">
+    <!-- Tech Outer Boundary Ring -->
+    <circle cx="0" cy="0" r="85" fill="none" stroke="#102a1e" stroke-width="1" stroke-dasharray="4 6" />
+    <circle cx="0" cy="0" r="75" fill="none" stroke="url(#accentMint)" stroke-width="1.5" />
+    
+    <!-- Geometric Triangulation Overlay -->
+    <polygon points="0,-75 65,37 -65,37" fill="none" stroke="#10b981" stroke-opacity="0.15" stroke-width="1" />
+    
+    <!-- Central Map Pin / Leaf Hybrid -->
+    <g transform="translate(0, -15)">
+      <!-- Glistening Outer Glow Map Pin Core -->
+      <path d="M 0,-45 C -25,-45 -45,-25 -45,2 C -45,30 0,65 0,65 C 0,65 45,30 45,2 C 45,-25 25,-45 0,-45 Z" fill="url(#primaryGreen)" filter="url(#glow)" opacity="0.85" />
+      
+      <!-- Sprouting Organic Leaf Core Negative Space -->
+      <path d="M 0,-25 C 12,-25 18,-12 18,2 C 18,18 0,32 0,32 C 0,32 -18,18 -18,2 C -18,-12 -12,-25 0,-25 Z" fill="#0a120e" />
+      <path d="M 0,25 L 0,-15 C 0,-15 8,-5 6,5" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" />
+    </g>
+
+    <!-- Crosshair Target Elements -->
+    <line x1="-95" y1="0" x2="-80" y2="0" stroke="#34d399" stroke-width="2" />
+    <line x1="80" y1="0" x2="95" y2="0" stroke="#34d399" stroke-width="2" />
+    <line x1="0" y1="-95" x2="0" y2="-80" stroke="#34d399" stroke-width="2" />
+    <line x1="0" y1="80" x2="0" y2="95" stroke="#34d399" stroke-width="2" />
+  </g>
+
+  <!-- Typography Alignment & Interface Metadata Labels -->
+  <text x="330" y="255" class="title-text">ReGen Mapper</text>
+  <text x="335" y="295" class="subtitle-text">SPATIAL RESTORATION &amp; SUSTAINABILITY</text>
+  
+  <!-- System / Coordinates Metadata Labels -->
+  <text x="335" y="340" class="tech-label">SYS_REF: 0.10.2025 // MODE: ACTIVE</text>
+  <text x="1010" y="550" class="tech-label">LAT: 1° 02' S // LON: 37° 04' E</text>
+  <text x="50" y="550" class="tech-label">REGEN_MAPPER_v2.0 // SVG_OUTPUT</text>
+</svg>

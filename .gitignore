@@ -1,0 +1,23 @@
+# Dependencies
+**/node_modules/
+
+# Production Builds
+**/dist/
+**/build/
+**/*.tsbuildinfo
+
+# Secrets and Local Configurations
+**/.env
+**/.env.local
+**/*.env
+**/config/local.json
+
+# Logs
+**/*.log
+**/npm-debug.log*
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
