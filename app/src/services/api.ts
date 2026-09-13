@@ -71,20 +71,72 @@ export const signup = (email: string, password: string) =>
 export const login = (email: string, password: string) =>
   request<AuthResponse>('/api/auth/login', { method: 'POST', body: { email, password } });
 
+// ---- Zones ----
+
+export interface Zone {
+  _id: string;
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  targetTrees?: number;
+}
+
+export interface ZoneInput {
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  targetTrees?: number;
+}
+
+export const listZones = () => request<Zone[]>('/api/zones');
+
+export const createZone = (zone: ZoneInput) =>
+  request<Zone>('/api/zones', { method: 'POST', body: zone, auth: true });
+
 // ---- Planting logs ----
 
 export interface PlantingLogInput {
   species: string;
   quantity: number;
-  location: string;
+  zone: string; // Zone _id
+  latitude: number;
+  longitude: number;
   date: string;
   notes?: string;
 }
 
-export const createPlantingLog = (log: PlantingLogInput) =>
-  request('/api/planting-logs', { method: 'POST', body: log, auth: true });
+export interface PlantingLogRecord {
+  _id: string;
+  species: string;
+  quantity: number;
+  zone: { _id: string; name: string } | null;
+  latitude: number;
+  longitude: number;
+  date: string;
+  notes?: string;
+  createdAt: string;
+}
 
-export const listPlantingLogs = () => request('/api/planting-logs');
+export interface PlantingLogFilters {
+  zone?: string;
+  species?: string;
+  dateFrom?: string;
+  dateTo?: string;
+}
+
+export const createPlantingLog = (log: PlantingLogInput) =>
+  request<PlantingLogRecord>('/api/planting-logs', { method: 'POST', body: log, auth: true });
+
+export const listPlantingLogs = (filters: PlantingLogFilters = {}) => {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.set(key, value);
+  });
+  const query = params.toString();
+  return request<PlantingLogRecord[]>(`/api/planting-logs${query ? `?${query}` : ''}`);
+};
 
 // ---- Impact stats ----
 

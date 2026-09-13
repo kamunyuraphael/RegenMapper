@@ -11,7 +11,7 @@ export const getImpactStatus = async (_req: AuthedRequest, res: Response, next: 
         $group: {
           _id: null,
           trees_planted: { $sum: '$quantity' },
-          zones: { $addToSet: '$location' },
+          zones: { $addToSet: '$zone' },
           contributors: { $addToSet: '$user' },
         },
       },

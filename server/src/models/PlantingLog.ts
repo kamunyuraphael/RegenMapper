@@ -3,7 +3,9 @@ import { Schema, model, Document, Types } from 'mongoose';
 export interface IPlantingLog extends Document {
   species: string;
   quantity: number;
-  location: string;
+  zone: Types.ObjectId;
+  latitude: number;
+  longitude: number;
   date: Date;
   notes?: string;
   user?: Types.ObjectId; // optional: set when the submitter is signed in
@@ -13,7 +15,9 @@ export interface IPlantingLog extends Document {
 const plantingLogSchema = new Schema<IPlantingLog>({
   species: { type: String, required: true, trim: true },
   quantity: { type: Number, required: true, min: 0 },
-  location: { type: String, required: true, trim: true },
+  zone: { type: Schema.Types.ObjectId, ref: 'Zone', required: true },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
   date: { type: Date, required: true },
   notes: { type: String, trim: true },
   user: { type: Schema.Types.ObjectId, ref: 'User' },

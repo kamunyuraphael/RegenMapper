@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes';
 import plantingLogsRoutes from './routes/plantingLogs.routes';
 import impactRoutes from './routes/impact.routes';
 import contactRoutes from './routes/contact.routes';
+import zonesRoutes from './routes/zones.routes';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/planting-logs', plantingLogsRoutes);
 app.use('/api/impact', impactRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/zones', zonesRoutes);
 
 app.use(errorHandler);
 

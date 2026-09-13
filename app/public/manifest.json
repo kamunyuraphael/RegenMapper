@@ -3,9 +3,9 @@
   "short_name": "ReGen",
   "icons": [
     {
-      "src": "/assets/logo.png",
+      "src": "/assets/favicon.svg",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
+      "type": "image/svg+xml"
     },
     {
       "src": "/assets/logo.png",
