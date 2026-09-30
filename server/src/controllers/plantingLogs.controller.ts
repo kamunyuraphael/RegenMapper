@@ -31,7 +31,7 @@ export const createPlantingLog = async (req: AuthedRequest, res: Response, next:
 
 export const listPlantingLogs = async (req: AuthedRequest, res: Response, next: NextFunction) => {
   try {
-    const { zone, species, dateFrom, dateTo } = req.query;
+    const { zone, species, dateFrom, dateTo, mine } = req.query;
 
     const filter: Record<string, unknown> = {};
     if (zone) filter.zone = zone;
@@ -41,6 +41,12 @@ export const listPlantingLogs = async (req: AuthedRequest, res: Response, next: 
       if (dateFrom) dateFilter.$gte = new Date(String(dateFrom));
       if (dateTo) dateFilter.$lte = new Date(String(dateTo));
       filter.date = dateFilter;
+    }
+    if (mine === 'true') {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Sign in to view your own plantings' });
+      }
+      filter.user = req.user.userId;
     }
 
     const logs = await PlantingLog.find(filter)

@@ -2,14 +2,22 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 if (!API_URL) {
-  throw new Error('Missing REACT_APP_API_URL environment variable');
+  throw new Error('Missing VITE_API_URL environment variable');
 }
 
 const SESSION_KEY = 'regen_mapper_session';
 
+export interface AuthUser {
+  id: string;
+  email: string;
+  displayName?: string;
+  bio?: string;
+  isVerified: boolean;
+}
+
 export interface Session {
   token: string;
-  user: { id: string; email: string };
+  user: AuthUser;
 }
 
 export const getSession = (): Session | null => {
@@ -62,7 +70,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
 export interface AuthResponse {
   token: string;
-  user: { id: string; email: string };
+  user: AuthUser;
 }
 
 export const signup = (email: string, password: string) =>
@@ -70,6 +78,21 @@ export const signup = (email: string, password: string) =>
 
 export const login = (email: string, password: string) =>
   request<AuthResponse>('/api/auth/login', { method: 'POST', body: { email, password } });
+
+export const verifyEmail = (token: string) =>
+  request<{ user: AuthUser }>('/api/auth/verify-email', { method: 'POST', body: { token } });
+
+export const resendVerification = () =>
+  request<{ message: string }>('/api/auth/resend-verification', { method: 'POST', auth: true });
+
+export const forgotPassword = (email: string) =>
+  request<{ message: string }>('/api/auth/forgot-password', { method: 'POST', body: { email } });
+
+export const resetPassword = (token: string, password: string) =>
+  request<{ message: string }>('/api/auth/reset-password', { method: 'POST', body: { token, password } });
+
+export const updateProfile = (data: { displayName?: string; bio?: string }) =>
+  request<{ user: AuthUser }>('/api/auth/me', { method: 'PUT', body: data, auth: true });
 
 // ---- Zones ----
 
@@ -124,6 +147,7 @@ export interface PlantingLogFilters {
   species?: string;
   dateFrom?: string;
   dateTo?: string;
+  mine?: boolean;
 }
 
 export const createPlantingLog = (log: PlantingLogInput) =>
@@ -132,10 +156,10 @@ export const createPlantingLog = (log: PlantingLogInput) =>
 export const listPlantingLogs = (filters: PlantingLogFilters = {}) => {
   const params = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
-    if (value) params.set(key, value);
+    if (value) params.set(key, String(value));
   });
   const query = params.toString();
-  return request<PlantingLogRecord[]>(`/api/planting-logs${query ? `?${query}` : ''}`);
+  return request<PlantingLogRecord[]>(`/api/planting-logs${query ? `?${query}` : ''}`, { auth: true });
 };
 
 // ---- Impact stats ----
@@ -148,6 +172,30 @@ export interface ImpactStatus {
 
 export const getImpactStatus = () => request<ImpactStatus>('/api/impact');
 
+// ---- Vegetation analysis ----
+
+export interface NdviPoint {
+  date: string;
+  ndvi: number;
+}
+
+export interface VegetationTrend {
+  slope_per_month: number;
+  r_squared: number;
+  direction: 'improving' | 'declining' | 'stable';
+  forecast: NdviPoint[];
+}
+
+export interface VegetationAnalysis {
+  zone: { id: string; name: string };
+  source: 'sample' | 'gee';
+  series: NdviPoint[];
+  trend: VegetationTrend;
+}
+
+export const getZoneVegetation = (zoneId: string, months = 24) =>
+  request<VegetationAnalysis>(`/api/zones/${zoneId}/vegetation?months=${months}`);
+
 // ---- Contact ----
 
 export interface ContactInput {
@@ -158,3 +206,33 @@ export interface ContactInput {
 
 export const sendContactMessage = (payload: ContactInput) =>
   request('/api/contact', { method: 'POST', body: payload });
+
+// ---- Forest-loss hexes ----
+
+export interface ForestHexProperties {
+  h3: string;
+  canopy2000: number;
+  treeHa2000: number;
+  loss: number[]; // hectares lost per year, index 0 = metadata.years[0]
+}
+
+export interface ForestHexFeature {
+  type: 'Feature';
+  properties: ForestHexProperties;
+  geometry: { type: 'Polygon'; coordinates: number[][][] };
+}
+
+export interface ForestHexCollection {
+  type: 'FeatureCollection';
+  metadata: {
+    source: 'demo' | 'hansen-gfc';
+    years: number[];
+    resolution: number;
+    canopyThreshold: number;
+    generated: string;
+    note: string;
+  };
+  features: ForestHexFeature[];
+}
+
+export const getForestHexes = () => request<ForestHexCollection>('/api/forest-hexes');

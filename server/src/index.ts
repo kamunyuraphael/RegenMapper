@@ -9,6 +9,8 @@ import plantingLogsRoutes from './routes/plantingLogs.routes';
 import impactRoutes from './routes/impact.routes';
 import contactRoutes from './routes/contact.routes';
 import zonesRoutes from './routes/zones.routes';
+import forestHexesRoutes from './routes/forestHexes.routes';
+import analyticsRoutes from './routes/analytics.routes';
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use('/api/planting-logs', plantingLogsRoutes);
 app.use('/api/impact', impactRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/zones', zonesRoutes);
+app.use('/api/forest-hexes', forestHexesRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.use(errorHandler);
 

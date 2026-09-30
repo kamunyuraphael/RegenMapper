@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import Landing from './components/Landing';
 import MapView from './components/MapView';
@@ -6,11 +6,34 @@ import PlantingLog from './components/PlantingLog';
 import ImpactDashboard from './components/ImpactDashboard';
 import Contact from './components/Contact';
 import JoinCampaign from './components/JoinCampaign';
+import Profile from './components/Profile';
+import EmailVerification from './components/EmailVerification';
+import ResetPassword from './components/ResetPassword';
 import Footer from './components/Footer';
 import { Button } from './components/ui/button';
 import { useAuth } from './context/AuthContext';
 
-export type View = 'landing' | 'map' | 'log' | 'dashboard' | 'contact' | 'join';
+export type View =
+  | 'landing'
+  | 'map'
+  | 'log'
+  | 'dashboard'
+  | 'contact'
+  | 'join'
+  | 'profile'
+  | 'verify-email'
+  | 'reset-password';
+
+// Emailed links look like /?mode=verify&token=... or /?mode=reset&token=...
+function readEmailLink(): { view: View; token: string } | null {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get('mode');
+  const token = params.get('token');
+  if (!token) return null;
+  if (mode === 'verify') return { view: 'verify-email', token };
+  if (mode === 'reset') return { view: 'reset-password', token };
+  return null;
+}
 
 const NAV_LINKS: { label: string; view: View }[] = [
   { label: 'Map', view: 'map' },
@@ -20,9 +43,15 @@ const NAV_LINKS: { label: string; view: View }[] = [
 ];
 
 function App() {
-  const [view, setView] = useState<View>('landing');
+  const [emailLink] = useState(readEmailLink);
+  const [view, setView] = useState<View>(emailLink?.view ?? 'landing');
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+
+  // Strip the one-time token from the address bar once we've captured it.
+  useEffect(() => {
+    if (emailLink) window.history.replaceState({}, '', window.location.pathname);
+  }, [emailLink]);
 
   const go = (next: View) => {
     setView(next);
@@ -52,7 +81,14 @@ function App() {
             ))}
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-white/70">{user?.email}</span>
+                <button
+                  onClick={() => go('profile')}
+                  className={`text-sm transition-colors hover:text-sprout ${
+                    view === 'profile' ? 'text-sprout' : 'text-white/70'
+                  }`}
+                >
+                  {user?.displayName || user?.email}
+                </button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -87,7 +123,12 @@ function App() {
             ))}
             {isAuthenticated ? (
               <>
-                <span className="py-2 text-sm text-white/60">{user?.email}</span>
+                <button
+                  onClick={() => go('profile')}
+                  className="py-2 text-left text-sm text-white/60 hover:text-sprout"
+                >
+                  {user?.displayName || user?.email}
+                </button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -113,6 +154,14 @@ function App() {
         {view === 'dashboard' && <ImpactDashboard />}
         {view === 'contact' && <Contact />}
         {view === 'join' && <JoinCampaign onNavigate={go} />}
+        {view === 'profile' &&
+          (isAuthenticated ? <Profile /> : <JoinCampaign onNavigate={go} />)}
+        {view === 'verify-email' && emailLink && (
+          <EmailVerification token={emailLink.token} onNavigate={go} />
+        )}
+        {view === 'reset-password' && emailLink && (
+          <ResetPassword token={emailLink.token} onNavigate={go} />
+        )}
       </main>
 
       <Footer onNavigate={go} />

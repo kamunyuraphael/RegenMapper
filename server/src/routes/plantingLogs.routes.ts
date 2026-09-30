@@ -7,6 +7,6 @@ const router = Router();
 // Logging a planting doesn't require an account — attachUserIfPresent just
 // tags the entry with a user id when the submitter happens to be signed in.
 router.post('/', attachUserIfPresent, createPlantingLog);
-router.get('/', listPlantingLogs);
+router.get('/', attachUserIfPresent, listPlantingLogs);
 
 export default router;

@@ -1,0 +1,5 @@
+# Only needed for the offline forest-hex data pipeline, not for the FastAPI service.
+numpy>=2.0
+rasterio>=1.4
+h3>=4.1
+shapely>=2.0
