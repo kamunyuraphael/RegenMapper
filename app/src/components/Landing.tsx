@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getImpactStatus } from '../services/api';
 import { Button } from './ui/button';
 import type { View } from '../App';
-import forestImg from '../assets/forest.png';
+{/**import forestImg from '../assets/forest.png';**/}
 
 interface LandingProps {
   onNavigate: (view: View) => void;
@@ -33,7 +33,7 @@ const Landing = ({ onNavigate }: LandingProps) => {
       {/* Hero */}
       <section
         className="relative flex min-h-[85vh] items-center bg-canopy bg-cover bg-center"
-        style={{ backgroundImage: `linear-gradient(to right, rgba(15,61,46,0.88), rgba(15,61,46,0.55)), url(${forestImg})` }}
+        style={{ backgroundImage: `linear-gradient(to right, rgba(15,61,46,0.88), rgba(15,61,46,0.55)), url(https://res.cloudinary.com/iprdnhzp/image/upload/v1790754252/pexels-daniel-eliashevsky-30667400-13444072_tiankf.jpg)` }}
       >
         <div className="mx-auto w-full max-w-6xl animate-hero-rise px-6 py-20 text-white">
           <h1 className="max-w-2xl font-display text-5xl font-semibold leading-tight sm:text-6xl">

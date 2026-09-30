@@ -63,7 +63,7 @@ function App() {
       <nav className="bg-canopy text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <button onClick={() => go('landing')} className="flex items-center gap-2">
-            <img src="/assets/logo.png" alt="ReGen Mapper" className="h-8 w-auto" />
+            <img src="/assets/logo.svg" alt="ReGen Mapper" className="h-8 w-auto" />
             <span className="font-display text-lg font-semibold">ReGen Mapper</span>
           </button>
 

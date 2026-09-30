@@ -8,7 +8,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Alert } from './ui/alert';
 import { Spinner } from './ui/spinner';
-import joinImg from '../assets/join-campaign.png';
+{/**import joinImg from '../assets/join-campaign.png';**/}
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -86,7 +86,7 @@ const JoinCampaign = ({ onNavigate }: JoinCampaignProps) => {
     <div className="grid min-h-[75vh] md:grid-cols-2">
       <div
         className="hidden bg-canopy bg-cover bg-center md:block"
-        style={{ backgroundImage: `linear-gradient(to top, rgba(15,61,46,0.75), rgba(15,61,46,0.2)), url(${joinImg})` }}
+        style={{ backgroundImage: `linear-gradient(to top, rgba(15,61,46,0.75), rgba(15,61,46,0.2)), url(https://res.cloudinary.com/iprdnhzp/image/upload/v1790754874/pexels-lauripoldre-16983197_wtwduf.jpg)` }}
       />
 
       <div className="flex items-center px-6 py-16">
